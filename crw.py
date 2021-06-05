@@ -43,8 +43,5 @@ for items in responseQuestionItems:
 
 
 
-# print(type(responseJson[0])
-# for x in responseJson:
-#     print(x)
 
 
