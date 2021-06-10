@@ -15,7 +15,9 @@ for item in questionItems:
     idList.append(item['question_id'])
 
 
+answers = currentSite.fetch('questions/{ids}/answers', ids = idList[0:100])
+answersItems = answers['items']
 
-answers = currentSite.fetch('questions/{ids}/answers',ids = idList)
+for item in answersItems:
 
-print(answers)
+    print(item['score'])
