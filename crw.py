@@ -1,7 +1,6 @@
 import requests
 import json
 import urllib
-import urllib2
 
 
 
@@ -27,22 +26,31 @@ responseQuestion = requests.get(BASEURL,params=params)
 
 responseQuestionItems = responseQuestion.json()['items']
 
-for items in responseQuestionItems:
-    questionId = items['question_id']
-    # print(items['is_answered'])
-    
+for itemsQuestion in responseQuestionItems:
+
+    #dados do usuario
+    user_rep = itemsQuestion['owner']['reputation']
+    # print(user_rep)
+
+
+    #dados da pergunta
+
+    questionId = itemsQuestion['question_id']
+    # print(itemsQuestion['is_answered'])
+
 
     # print(responseAnswerItems[0]['owner']['user_id'])
     
-    if(items['is_answered'] == True):
+    if(itemsQuestion['is_answered'] == True):
 
         newUrl = BASEURL+'/'+str(questionId)+'/answers'
 
         responseAnswer = requests.get(newUrl,params=params)
         responseAnswerItems = responseAnswer.json()['items']
 
-        for aitems in responseAnswerItems:
-            print(aitems['is_accepted'])
+        for answerItem in responseAnswerItems:
+            
+            print(answerItem['is_accepted'])
 
 
 
