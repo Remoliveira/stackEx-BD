@@ -3,16 +3,13 @@ import json
 import urllib
 
 
-
-
-
 BASEURL = "https://api.stackexchange.com/2.2/questions"
 
 
 params = {
     "site":"stackoverflow"
 }
-
+print(params)
 
 
 # response = requests.get(
@@ -49,7 +46,7 @@ for itemsQuestion in responseQuestionItems:
         responseAnswerItems = responseAnswer.json()['items']
 
         for answerItem in responseAnswerItems:
-            
+
             print(answerItem['is_accepted'])
 
 

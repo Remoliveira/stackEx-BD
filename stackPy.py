@@ -1,28 +1,37 @@
 from stackapi import StackAPI
 
-currentSite = StackAPI('stackoverflow')
+sites = ['stackoverflow','askubuntu','softwareengineering']
 
-questions = currentSite.fetch('questions')
+# currentSite = StackAPI('stackoverflow')
+cotaRestante = 300
 
-questionItems = questions['items']
+currentSite = StackAPI('askubuntu')
+
+while(cotaRestante >= cotaRestante - 50):
+
+    questions = currentSite.fetch('questions')
+
+    cotaRestante = questions['quota_remaining']
+
+    questionItems = questions['items']
 
 
 
-idList = []
+    idList = []
 
-for item in questionItems:
+    for item in questionItems:
 
-    idList.append(item['question_id'])
+        idList.append(item['question_id'])
+        
+        # reputation = item['owner']['reputation']
+        # print(item)
+        
+    #for 0 -- 100 = 500
 
-    # reputation = item['owner']['reputation']
+    answers = currentSite.fetch('questions/{ids}/answers', ids = idList[0:100])
+    answersItems = answers['items']
 
-    
-#for 0 -- 100 = 500
+    for item in answersItems:
 
-answers = currentSite.fetch('questions/{ids}/answers', ids = idList[0:100])
-answersItems = answers['items']
-
-for item in answersItems:
-
-    # print(item)
-    print(item['question_id'])
+        # print(item)
+        print(item['question_id'])
