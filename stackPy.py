@@ -1,37 +1,69 @@
 from stackapi import StackAPI
+import time
 
-sites = ['stackoverflow','askubuntu','softwareengineering']
+# def calculaCota(cotaTotal,cotaGasta):
+
+#     return 
+
+
+sites = ['stackoverflow','askubuntu','softwareengineering','gaming','cstheory','math','dba']
 
 # currentSite = StackAPI('stackoverflow')
-cotaRestante = 300
+cotaTotal = 300
 
-currentSite = StackAPI('askubuntu')
+for site in sites: 
 
-while(cotaRestante >= cotaRestante - 50):
+    currentSite = StackAPI('{}'.format(site))
+    print(site)
 
-    questions = currentSite.fetch('questions')
+    cotaGasta = 0
+    while(cotaGasta <= 50):
 
-    cotaRestante = questions['quota_remaining']
+        questions = currentSite.fetch('questions')
 
-    questionItems = questions['items']
+        cotaRestante = questions['quota_remaining']
+        cotaGasta = cotaTotal - cotaRestante
+        cotaTotal = cotaRestante
 
 
+        questionItems = questions['items']
 
-    idList = []
+        idList = []
+        userSet = {}
+        for item in questionItems:
 
-    for item in questionItems:
+            # reputation = item['owner']['reputation']
+            questionOwner = item['owner']
+            userId = questionOwner['user_id']
 
-        idList.append(item['question_id'])
+            userSet.add(userId)
+
+            if(item['is_answered'] == True):
+
+                idList.append(item['question_id'])
+                
+        # print(len(idList))
+        # print(idList)
         
-        # reputation = item['owner']['reputation']
-        # print(item)
+        time.sleep(31)
+            
+
+        for idAnswer in range(0,500,100):
+            
+
+            answers = currentSite.fetch('questions/{ids}/answers', ids = idList[idAnswer:idAnswer+100])
+            answersItems = answers['items']
+
+            cotaRestante = answers['quota_remaining']
+            cotaGasta = cotaTotal - cotaRestante
+            cotaTotal = cotaRestante
+
+            for item in answersItems:
+
+                # print(item)
+                print(item['question_id'])
         
-    #for 0 -- 100 = 500
+            time.sleep(31)
+        
 
-    answers = currentSite.fetch('questions/{ids}/answers', ids = idList[0:100])
-    answersItems = answers['items']
-
-    for item in answersItems:
-
-        # print(item)
-        print(item['question_id'])
+    
