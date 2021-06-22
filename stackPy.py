@@ -1,11 +1,6 @@
 from stackapi import StackAPI
 import time
 
-# def calculaCota(cotaTotal,cotaGasta):
-
-#     return 
-
-
 sites = ['stackoverflow','askubuntu','softwareengineering','gaming','cstheory','math','dba']
 
 # currentSite = StackAPI('stackoverflow')
@@ -22,25 +17,41 @@ for site in sites:
         questions = currentSite.fetch('questions')
 
         cotaRestante = questions['quota_remaining']
-        cotaGasta = cotaTotal - cotaRestante
+        cotaGasta += (cotaTotal - cotaRestante)
         cotaTotal = cotaRestante
 
 
         questionItems = questions['items']
 
         idList = []
-        userSet = {}
+        userSet = set()
+        tagsList = []
+
         for item in questionItems:
 
-            # reputation = item['owner']['reputation']
-            questionOwner = item['owner']
-            userId = questionOwner['user_id']
+            owner = item['owner'] 
+            ownerId = owner.get('user_id')
+            userSet.add(ownerId)
 
-            userSet.add(userId)
+            lastEditdate = item.get('last_edit_date')
+            creationDate = item.get('creation_date')
+            link = item.get('link')
+            lastActivityDate = item.get('last_activity_date')
+            score = item.get('score')
+            questionId = item.get('question_id')
+            title = item.get('title')
+            answerCount = item.get('answer_count')
+            isAnswered = item.get('is_answered')
+            viewCount = item.get('view_count')
 
-            if(item['is_answered'] == True):
+            tags = item.get('tags')
+            for tag in tags:
+                tagsList.append(tag)
 
-                idList.append(item['question_id'])
+
+            if(isAnswered):
+
+                idList.append(questionId)
                 
         # print(len(idList))
         # print(idList)
@@ -48,22 +59,54 @@ for site in sites:
         time.sleep(31)
             
 
-        for idAnswer in range(0,500,100):
+        # for idAnswer in range(0,500,100):
             
 
-            answers = currentSite.fetch('questions/{ids}/answers', ids = idList[idAnswer:idAnswer+100])
-            answersItems = answers['items']
+        answers = currentSite.fetch('questions/{ids}/answers', ids = idList[0:100])
+        answersItems = answers['items']
 
-            cotaRestante = answers['quota_remaining']
-            cotaGasta = cotaTotal - cotaRestante
-            cotaTotal = cotaRestante
+        cotaRestante = answers['quota_remaining']
+        cotaGasta = cotaTotal - cotaRestante
+        cotaTotal = cotaRestante
 
-            for item in answersItems:
+        for item in answersItems:
 
-                # print(item)
-                print(item['question_id'])
-        
-            time.sleep(31)
+            # print(item)
+            # print(item['question_id'])
+
+            lastEditdate = item.get('last_edit_date')
+            creationDate = item.get('creation_date')
+            link = item.get('link')
+            lastActivityDate = item.get('last_activity_date')
+            score = item.get('score')
+            answerId = item.get('answer_id')
+            isAccepted = item.get('is_accepted')
+            questionId = item.get('question_id')
+
+        time.sleep(31)
+
+        userList = list(userSet) 
+        users = currentSite.fetch('users/{ids}', ids = userList[0:100])
+        usersItem = users['items']
+
+        for item in usersItem:
+
+            userId = item.get('user_id')
+            reputation = item.get('reputation')
+            userType = item.get('type')
+            acceptRate = item.get('accept_rate')
+            displayName = item.get('display_name')
+            userLink = item.get('userLink')
+
+            badges = item.get('bagde_counts')
+            bronzeBadge = badges.get('bronze')
+            silverBadge = badges.get('silver')
+            goldBadge = badges.get('gold')
+
+
+        time.sleep(31)
+
+
         
 
     
