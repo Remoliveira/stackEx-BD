@@ -53,10 +53,10 @@ for site in sites:
 
                 idList.append(questionId)
                 
-        # print(len(idList))
-        # print(idList)
+        print(len(idList))
+        print(idList)
         
-        time.sleep(31)
+        time.sleep(10)
             
 
         # for idAnswer in range(0,500,100):
@@ -83,7 +83,7 @@ for site in sites:
             isAccepted = item.get('is_accepted')
             questionId = item.get('question_id')
 
-        time.sleep(31)
+        time.sleep(10)
 
         userList = list(userSet) 
         users = currentSite.fetch('users/{ids}', ids = userList[0:100])
@@ -104,7 +104,7 @@ for site in sites:
             goldBadge = badges.get('gold')
 
 
-        time.sleep(31)
+        time.sleep(10)
 
 
         
